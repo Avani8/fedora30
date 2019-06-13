@@ -132,6 +132,7 @@ extern bool ima_canonical_fmt;
 /* Internal IMA function definitions */
 int ima_init(void);
 int ima_fs_init(void);
+int ima_fs_record_init(void);
 int ima_add_template_entry(struct ima_template_entry *entry, int violation,
 			   const char *op, struct inode *inode,
 			   const unsigned char *filename);
@@ -152,9 +153,17 @@ struct ima_template_desc *ima_template_desc_current(void);
 int ima_restore_measurement_entry(struct ima_template_entry *entry);
 int ima_restore_measurement_list(loff_t bufsize, void *buf);
 int ima_measurements_show(struct seq_file *m, void *v);
+void *ima_measurements_start(struct seq_file *m, loff_t *pos);
+void *ima_measurements_next(struct seq_file *m, void *v, loff_t *pos);
+void ima_measurements_stop(struct seq_file *m, void *v);
 unsigned long ima_get_binary_runtime_size(void);
 int ima_init_template(void);
 void ima_init_template_list(void);
+extern struct dentry *ima_dir;
+extern struct dentry *binary_runtime_measurements;
+extern struct dentry *ascii_runtime_measurements;
+extern const struct file_operations ima_measurements_ops;
+extern const struct file_operations ima_ascii_measurements_ops;
 int __init ima_init_digests(void);
 
 /*
